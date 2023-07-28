@@ -5,6 +5,7 @@
         ]
     },
     "tasks": {
-        "dev":"deno run --allow-net --allow-read --watch test.ts"
+        "dev":"deno run --allow-net --allow-read --watch test.ts",
+        "dev:res":"deno run --allow-net --watch rest-server.ts"
     }
 }

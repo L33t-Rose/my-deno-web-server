@@ -1,19 +1,16 @@
-type Handler = (req)=>{}
-type Route = Map<string,Handler>
+export type Handler = (req:Request,params:URLSearchParams)=>Response
 const pathRegex = /\/\w*[?\w+=\w*]*/g
 
-class Router{
-    private paths:Set<string>
+export class Router{
     private resolvers:Map<string,Handler>;
     private subRouters:Map<string,Router>;
     constructor(){
-        this.paths = new Set<string>();
         this.resolvers = new Map<string,Handler>();
         this.subRouters = new Map<string,Router>();
     }
     //Assumption for now is there are no dynamic
     resolveRoute(route:string):Handler|undefined{
-        console.log('route to resolve',route);
+        console.log('route to resolve here',route);
         let handler = this.resolvers.get(route);
         if(!handler){
             const paths = route.match(pathRegex);
@@ -22,7 +19,7 @@ class Router{
             }
             paths.shift();
             console.log(paths);
-            let subPath = paths.shift();
+            const subPath = paths.shift();
             if(!subPath){
                 return undefined;
             }
@@ -40,28 +37,3 @@ class Router{
         return obj && 'resolvePath' in obj && 'paths' in obj && obj.paths.toString() == '[object Set]';
     }
 }
-
-
-const router =new Router();
-router.add("/",(req)=>{
-    console.log("I'm in /");
-    return new Response('asd',{status:200})
-})
-router.add("/test",()=>{
-    console.log("logging in /test")
-})
-router.add("/test/die",()=>{
-    console.log("logging in /test/die");
-});
-
-const secondRouter = new Router();
-router.add("/",()=>{
-    console.log('here in / in aasdasd');
-})
-
-router.bind("/aasdasd",secondRouter);
-
-router.resolveRoute("/")
-router.resolveRoute("/test");
-router.resolveRoute("/test/aasdasd/");
-router.resolveRoute("/test/die");
