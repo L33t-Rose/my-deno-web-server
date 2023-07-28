@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "lib": [
+            "deno.window"
+        ]
+    },
+    "tasks": {
+        "dev":"deno run --allow-net --allow-read --watch test.ts"
+    }
+}
