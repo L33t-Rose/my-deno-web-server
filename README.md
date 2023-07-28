@@ -11,8 +11,26 @@ What I hope to learn:
   - What is inside a request body and how do I react accordingly to that request body?
 * What it's like to work in Deno
 
-
 How to run web server(in terminal):
 ```
-deno run --allow-net --allow-read test.ts
+deno task dev
 ```
+
+Running server with router
+```
+deno task dev:server
+```
+
+# Update 7/28/2023
+Implemented my own basic router. Check out `router.ts`.
+Currently I do not support the ability to have dynamic routes but I plan on fixing that later.
+
+What I have so far:
+* The ability to set handlers for pre-determined routes
+* The ability to bind subrouters to specific paths
+* Automatic Query Param parsing thanks to `URLSearchParams`
+
+What I want to add:
+* Support for dynamic routes (i.e. '/:id')
+  - I'd most likely change the params object to have slugs **and** the queryParams
+
