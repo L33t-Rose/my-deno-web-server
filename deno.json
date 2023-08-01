@@ -6,6 +6,7 @@
     },
     "tasks": {
         "dev":"deno run --allow-net --allow-read --watch test.ts",
-        "dev:res":"deno run --allow-net --watch rest-server.ts"
+        "dev:res":"deno run --allow-net --watch rest-server.ts",
+        "spinup":"deno task dev && deno task dev:res"
     }
 }

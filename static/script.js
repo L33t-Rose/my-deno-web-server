@@ -21,9 +21,11 @@ async function grabHTML(){
 document.querySelector("#test").addEventListener('click',(e)=>{
     // grabHTML();
     const parser = new DOMParser();
-    const string = "<p>Hi!</p>\n<b>I'm trying out something</b>";
+    const string = `<p>Hi!</p>
+    <b>I'm trying out something</b>`;
+    console.log(string);
     const parsedDOM = parser.parseFromString(string,"text/html");
-    console.log(parsedDOM);
+    console.log('here again',parsedDOM);
     console.log(parsedDOM.body.childNodes);
     console.log('length',parsedDOM.body.childNodes.length);
     const fragment = new DocumentFragment();
