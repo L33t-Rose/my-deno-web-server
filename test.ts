@@ -1,4 +1,6 @@
 import {serve} from './deps.ts';
+import {getPathFromURL} from './util/index.ts';
+import type {SEC_FETCH_TYPE} from './util/index.ts';
 
 const port = 8080;
 const STATIC_PATH = '/static';
@@ -9,13 +11,6 @@ async function showHTML(path:string){
     return await Deno.readTextFileSync(`.${STATIC_PATH}${path}`)
 }
 
-type SEC_FETCH_TYPE = "audio" | "audioworklet" | "document" | "embed" | "empty" | "font" | "frame" | "iframe" | "image" | "manifest" | "object" | "paintworklet" | "report" | "script" | "serviceworker" | "sharedworker" | "style" | "track" 
-| "video" | "worker" | "xslt";
-
-function getPathFromURL(fullURL:string,host:string):string{
-    const pathIndex = fullURL.indexOf(host)+host.length;
-    return fullURL.slice(pathIndex);
-}
 
 serve(async (req)=>{
     console.log(req);
