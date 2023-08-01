@@ -1,5 +1,4 @@
 import {serve} from './deps.ts';
-console.log('running here!')
 
 const port = 8080;
 const STATIC_PATH = '/static';

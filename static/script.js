@@ -1,21 +1,6 @@
 
 async function grabHTML(){
-    const req = new Request("./template/thing.html",{
-        method:'GET',
-        
-    });
-    console.log(req);
-    // req.destination="document";
-    const res = await fetch("./template/thing.html",{
-        method:'GET',
-        headers:{
-            'Content-Type':'text/html',
-            'sec-fetch-dest':'document',
-            'Accept':'text/html'
-        }
-    });
-    const data = await res.text();
-    console.log(data); 
+    const a = new XMLHttpRequest();
 }
 
 document.querySelector("#test").addEventListener('click',(e)=>{
