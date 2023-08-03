@@ -1,9 +1,8 @@
 import { serve } from "./deps.ts";
 import { Router } from "./router.ts";
-import { getPathFromURL} from './util/index.ts';
+import { getPathFromURL } from "./util/index.ts";
 import type { Handler } from "./router.ts";
-import type { SEC_FETCH_TYPE} from './util/index.ts';
-
+import type { SEC_FETCH_TYPE } from "./util/index.ts";
 
 const port = 8081;
 
@@ -17,19 +16,22 @@ router.add("/", "GET", function (req, param) {
 	});
 });
 
-router.add("/json", "GET", function (req, params) {
-    console.log(req);
-	if (!params.get("q")) {
+router.add("/json", "GET", function (req, data) {
+	console.log(req);
+	if (!data.params.get("q")) {
 		return new Response(JSON.stringify({ message: "q not provided" }), {
 			status: 400,
-            headers:{
-                'Content-Type':'application/json'
-            }
+			headers: {
+				"Content-Type": "application/json",
+			},
 		});
 	}
-	console.log(params.get("q"));
+	console.log(data.params.get("q"));
 	return new Response(
-		JSON.stringify({ message: "hello world from the server" }),
+		JSON.stringify({
+			message: "hello world from the server",
+			data: data.params.get("q"),
+		}),
 		{
 			status: 200,
 		}
@@ -46,7 +48,17 @@ router.get("/api/v1/", () => {
 		},
 	});
 });
-
+router.get("/api/v1/:userId", (req, data) => {
+	return new Response(
+		JSON.stringify({ message: `This is the userId: ${data.slug.userId}` }),
+		{
+			status: 200,
+			headers: {
+				"Content-Type": "application/json",
+			},
+		}
+	);
+});
 const error = ((_, __) => {
 	return new Response("DOES NOT EXIST", {
 		status: 404,
@@ -55,6 +67,7 @@ const error = ((_, __) => {
 		},
 	});
 }) satisfies Handler;
+
 serve(
 	(req) => {
 		const reqType = req.headers.get(
@@ -90,11 +103,14 @@ serve(
 		console.log(escapedPath);
 		console.log(req.url);
 		// console.log(req.method);
-		let handler = router.resolveRoute(escapedPath, req.method);
+		let [handler, slug] = router.resolveRoute(escapedPath, req.method);
 		if (!handler) {
 			handler = error;
 		}
-		const response = handler(req, new URLSearchParams(queryParams));
+		const response = handler(req, {
+			slug,
+			params: new URLSearchParams(queryParams),
+		});
 		response.headers.set("Access-Control-Allow-Origin", "*");
 		return response;
 	},
