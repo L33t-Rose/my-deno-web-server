@@ -59,6 +59,13 @@ router.get("/api/v1/:userId", (req, data) => {
 		}
 	);
 });
+
+router.get("/api/v1/coords/:lat/:lon", (req, data) => {
+	console.log(data.slug);
+	return new Response(
+		JSON.stringify({ lat: data.slug.lat, lon: data.slug.lon })
+	);
+});
 const error = ((_, __) => {
 	return new Response("DOES NOT EXIST", {
 		status: 404,
@@ -100,9 +107,7 @@ serve(
 			0,
 			hasQueryParams ? path.indexOf("?") : path.length
 		);
-		console.log(escapedPath);
-		console.log(req.url);
-		// console.log(req.method);
+
 		let [handler, slug] = router.resolveRoute(escapedPath, req.method);
 		if (!handler) {
 			handler = error;

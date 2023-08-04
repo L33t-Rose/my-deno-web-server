@@ -1,4 +1,4 @@
-# My Own Web Server
+# My Own Web Server and Router
 Built in Deno
 
 This is a basic project where I explore how web servers work. 
@@ -33,4 +33,27 @@ What I have so far:
 What I want to add:
 * Support for dynamic routes (i.e. '/:id')
   - I'd most likely change the params object to have slugs **and** the queryParams
+
+# Update 8/3/2023
+Big Change to the Router:
+* Router now supports adding and resolving dynamic route. A dynamic route is
+indicated by `:`
+* Modified function signature to add support for accessing the slug from dynamic route resolving in resolver
+``` ts
+function (
+	req: Request,
+	data: { slug: Record<string, string>; params: URLSearchParams }
+) : Response
+```
+* Any data caught by a dynamic route will be be sent through the slug field in the data paramater
+* Different method to handling route binding.
+  * In essence, instead of keeping track of an internal map of subrouters it would be better to just adding the handlers to the router the subrouter is binding to. (look at the image below for a visual example) 
+  
+  <img src="./images//router-before-and-after.png" width="400">
+* `add` now requires adding the HTTP method as a parameter.
+  * Also added `get`, `post`, `patch`, `delete` functions that just call `add` and passes in their respective HTTP method
+
+
+
+
 
